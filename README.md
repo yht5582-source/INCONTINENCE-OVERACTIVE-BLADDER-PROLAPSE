@@ -1,6 +1,8 @@
 # 尿失禁・膀胱過動症・骨盆器官脫垂｜臨床教學
 
-繁體中文互動教學網站：症狀分型、警訊排除、初步檢查、保守治療、藥物及轉介討論。包含六個示範病例和十題附解析考題。
+繁體中文互動教學網站：症狀分型、警訊排除、初步檢查、保守治療、藥物及轉介討論。v2.0 包含即時互動分流（每步標註 NICE／AUA 條號）、POP-Q 分期互動圖、OAB 治療 NICE vs AUA 對照、六個示範病例，以及 20 題附解析考題（10 基礎＋10 高階）。
+
+開發：分流邏輯在 `app.js` 的 `/*ENGINE-START*/…/*ENGINE-END*/`（`PF.pathway`、`PF.popqStage`），測試 `node tests.cjs`。
 
 網站：https://yht5582-source.github.io/INCONTINENCE-OVERACTIVE-BLADDER-PROLAPSE/
 
