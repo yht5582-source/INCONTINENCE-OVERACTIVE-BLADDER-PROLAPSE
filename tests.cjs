@@ -69,4 +69,30 @@ t('POP-Q staging boundaries', () => {
   assert.equal(s(6.5), 3); assert.equal(s(7), 4); assert.equal(s(-7, 9, 'apical'), 0); assert.equal(s(-5, 9, 'apical'), 1);
   assert.equal(PF.popqStage(0, 2).stage, null);
 });
+t('full cases: three, each stage has question and sourced steps', () => {
+  assert.equal(PF.FULL.length, 3);
+  PF.FULL.forEach(c => c.stages.forEach(s => { assert(s.label && s.q); assert(s.steps.length >= 3); s.steps.forEach(x => assert(x[0] && x[1], c.id + s.label)); }));
+});
+t('full cases: loaded presets give what the case teaches (cross-check with engine)', () => {
+  PF.FULL.forEach(c => c.stages.filter(s => s.preset).forEach(s => {
+    const r = PF.pathway(s.preset);
+    const all = ['assess', 'first', 'next', 'caution'].flatMap(k => r[k].map(x => x.text)).join(' ');
+    assert(s.expect && all.includes(s.expect), `${c.id}/${s.label} missing ${s.expect}`);
+    assert.equal(r.flags.length, 0);
+  }));
+});
+t('full case C: POP-Q values give stated stage', () => {
+  const p = PF.FULL.find(c => c.popq).popq;
+  assert.equal(PF.popqStage(p.lead, p.tvl, p.comp).stage, p.stage);
+  assert.equal(p.stage, 3);
+});
+t('mind map: five branches, every leaf sourced', () => {
+  assert.equal(PF.MAP.length, 5);
+  PF.MAP.forEach(b => b.groups.forEach(g => { assert(g.items.length); g.items.forEach(x => assert(x[0] && x[1], b.id + g.t)); }));
+});
+t('teaching data cites only known guidelines', () => {
+  const re = /^(NICE|AUA|IUGA|本頁)/;
+  PF.FULL.forEach(c => c.stages.forEach(s => s.steps.forEach(x => assert(re.test(x[1]), x[1]))));
+  PF.MAP.forEach(b => b.groups.forEach(g => g.items.forEach(x => assert(re.test(x[1]), x[1]))));
+});
 console.log(`${n} tests passed`);

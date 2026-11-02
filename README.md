@@ -1,8 +1,8 @@
 # 尿失禁・膀胱過動症・骨盆器官脫垂｜臨床教學
 
-繁體中文互動教學網站：症狀分型、警訊排除、初步檢查、保守治療、藥物及轉介討論。v2.0 包含即時互動分流（每步標註 NICE／AUA 條號）、POP-Q 分期互動圖、OAB 治療 NICE vs AUA 對照、六個示範病例，以及 20 題附解析考題（10 基礎＋10 高階）。
+繁體中文互動教學網站：症狀分型、警訊排除、初步檢查、保守治療、藥物及轉介討論。v2.0 包含即時互動分流（每步標註 NICE／AUA 條號）、POP-Q 分期互動圖、OAB 治療 NICE vs AUA 對照、九個示範病例（3 個完整病程＋6 個快問）、20 題附解析考題（10 基礎＋10 高階）與心智圖。v2.1 新增完整病例與心智圖。
 
-開發：分流邏輯在 `app.js` 的 `/*ENGINE-START*/…/*ENGINE-END*/`（`PF.pathway`、`PF.popqStage`），測試 `node tests.cjs`。
+開發：分流邏輯在 `app.js` 的 `/*ENGINE-START*/…/*ENGINE-END*/`（`PF.pathway`、`PF.popqStage`），教學資料（`PF.FULL`、`PF.MAP`）在 `/*TEACH-START*/…/*TEACH-END*/`，測試 `node tests.cjs`。
 
 網站：https://yht5582-source.github.io/INCONTINENCE-OVERACTIVE-BLADDER-PROLAPSE/
 
@@ -15,4 +15,4 @@
 - [AUA/SUFU 2023 女性應力性尿失禁手術](https://www.auanet.org/documents/Guidelines/PDF/2023%20Guidelines/SUI%20Unabridged%20FINAL%20080223.pdf)
 - [IUGA 骨盆器官脫垂臨床評估](https://www.iuga.org/publications/iuc/chapter-2-evaluation-of-the-patient-with-pelvic-organ-prolapse)
 
-資料核對：2026-10-31。
+資料核對：2026-11-02。

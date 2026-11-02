@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="尿失禁、膀胱過動症及骨盆器官脫垂的互動臨床教學：NICE NG123 與 AUA/SUFU 指引對照分流、POP-Q 分期、病例與 20 題考題">
+<meta name="description" content="尿失禁、膀胱過動症及骨盆器官脫垂的互動臨床教學：NICE NG123 與 AUA/SUFU 指引對照分流、POP-Q 分期、九個病例、20 題考題與心智圖">
 <meta name="color-scheme" content="light dark">
 <title>尿失禁・膀胱過動症・骨盆器官脫垂｜臨床教學</title>
-<link rel="stylesheet" href="style.css?v=2.0">
+<link rel="stylesheet" href="style.css?v=2.1">
 </head>
 <body>
 <a class="skip" href="#main">跳到主要內容</a>
 <header class="topbar">
   <a class="brand" href="#top">PELVIC FLOOR <span>CLINICAL LEARNING</span></a>
-  <nav aria-label="主選單"><a href="#framework">症狀分型</a><a href="#pathway">互動分流</a><a href="#popq">POP-Q</a><a href="#ladder">OAB 階梯</a><a href="#cases">病例</a><a href="#quiz">考題</a><a href="#sources">來源</a></nav>
+  <nav aria-label="主選單"><a href="#framework">症狀分型</a><a href="#pathway">互動分流</a><a href="#popq">POP-Q</a><a href="#ladder">OAB 階梯</a><a href="#cases">病例</a><a href="#quiz">考題</a><a href="#map">心智圖</a><a href="#sources">來源</a></nav>
   <button id="theme" class="ghost" type="button" aria-pressed="false">☾ 深色</button>
 </header>
 
@@ -196,7 +196,11 @@
 
 <section id="cases" class="section">
   <p class="eyebrow">05 / CASE LIBRARY</p>
-  <h2>六個示範病例</h2>
+  <h2>九個示範病例</h2>
+  <p class="muted">三個完整病例跟著同一位病人走過初診、治療與追蹤，先想問題再展開解析；可帶入互動分流對照。病例及數值皆為虛構。</p>
+  <div id="full-cases" class="full-list"></div>
+  <h3 class="sub">六個快問病例</h3>
+  <p class="muted">單一決策點，作答後看解析。</p>
   <div id="case-list" class="case-grid"></div>
 </section>
 
@@ -218,8 +222,16 @@
   </div>
 </section>
 
+<section id="map" class="section">
+  <p class="eyebrow">07 / MIND MAP</p>
+  <h2>心智圖</h2>
+  <p class="muted">把整頁的決策濃縮成一張圖，每個節點附指引條號。點分支標題可收合。</p>
+  <div class="mm-bar"><button type="button" class="chip-btn" id="mm-open">全部展開</button><button type="button" class="chip-btn" id="mm-close">全部收合</button></div>
+  <div id="mindmap" class="mindmap"></div>
+</section>
+
 <section id="sources" class="section sources">
-  <p class="eyebrow">07 / ORIGINAL GUIDANCE</p>
+  <p class="eyebrow">08 / ORIGINAL GUIDANCE</p>
   <h2>原始指引</h2>
   <ul>
     <li><span class="tag nice">國際</span><a href="https://www.nice.org.uk/guidance/ng123/chapter/recommendations" target="_blank" rel="noopener">NICE NG123 女性尿失禁與骨盆器官脫垂 ↗</a></li>
@@ -227,11 +239,11 @@
     <li><span class="tag aua">國際</span><a href="https://www.auanet.org/documents/Guidelines/PDF/2023%20Guidelines/SUI%20Unabridged%20FINAL%20080223.pdf" target="_blank" rel="noopener">AUA/SUFU 2023 女性應力性尿失禁手術 ↗</a></li>
     <li><span class="tag">國際</span><a href="https://www.iuga.org/publications/iuc/chapter-2-evaluation-of-the-patient-with-pelvic-organ-prolapse" target="_blank" rel="noopener">IUGA：脫垂臨床評估 ↗</a></li>
   </ul>
-  <p>資料核對：2026-10-31（NICE NG123 recommendations 頁面、AUA/SUFU OAB 2024 與 SUI 2023 全文 PDF 指引陳述）。NICE 的網片手術規範屬英國政策，須另核對台灣法規與院內流程。β3 促效劑之 NICE 建議見 TA290（mirabegron）與 TA999（vibegron）。</p>
+  <p>資料核對：2026-11-02（NICE NG123 recommendations 頁面、AUA/SUFU OAB 2024 與 SUI 2023 全文 PDF 指引陳述）。NICE 的網片手術規範屬英國政策，須另核對台灣法規與院內流程。β3 促效劑之 NICE 建議見 TA290（mirabegron）與 TA999（vibegron）。</p>
 </section>
 </main>
-<footer>PELVIC FLOOR · CLINICAL LEARNING v2.0 <span>醫療人員教學用途</span></footer>
+<footer>PELVIC FLOOR · CLINICAL LEARNING v2.1 <span>醫療人員教學用途</span></footer>
 <noscript><p class="noscript">互動分流、POP-Q 與考題需啟用 JavaScript。</p></noscript>
-<script src="app.js?v=2.0"></script>
+<script src="app.js?v=2.1"></script>
 </body>
 </html>

@@ -145,6 +145,187 @@
 })(typeof window !== 'undefined' ? window : globalThis);
 /*ENGINE-END*/
 
+/*TEACH-START*/
+(function (root) {
+  'use strict';
+  // each stage: situation, question, worked steps [text, source], pathway preset to load (expect = regex the engine output must match, checked in tests.cjs)
+  const FULL = [
+    {
+      id: 'sui', cls: 'c-stress', tag: '應力性 → 手術決策', title: '想手術的跑者：術前要不要做尿動力學？',
+      who: '47 歲，自然產 2 次，慢跑及咳嗽時漏尿 3 年，每天 2 片護墊，想恢復跑步。',
+      data: ['BMI 27', '無尿急、血尿、反覆 UTI', '試紙陰性', '3 天日誌：漏尿皆與腹壓有關，無急迫漏尿', '指診可收縮骨盆底肌'],
+      stages: [
+        {
+          label: '初診', q: '她問能不能直接排手術。下一步？',
+          steps: [
+            ['歸類為應力性尿失禁；開始前已指診確認能收縮骨盆底肌。', 'NICE 1.3.1・1.3.4'],
+            ['第一線：監督式骨盆底肌訓練至少 3 個月，每天 3 次、每次至少 8 下。', 'NICE 1.4.4–1.4.5'],
+            ['這階段也不需要墊片測試、膀胱鏡或影像。AUA 同時要求說明觀察、訓練、其他非手術與手術等選項。', 'NICE 1.3.14・1.3.18–1.3.19・AUA SUI 8']
+          ],
+          preset: { symptom: 'stress', phase: 'initial', flags: [], mods: [] }, expect: '至少 3 個月'
+        },
+        {
+          label: '訓練 4 個月後', q: '已照表訓練但仍影響運動，希望手術。膀胱適度充盈時咳嗽可見漏尿，殘尿 30 mL（虛構數值），尿液分析正常，無脫垂。要做尿動力學嗎？',
+          steps: [
+            ['術前評估五項已齊：病史與困擾、骨盆檢查、客觀證實 SUI、殘尿、尿液分析。', 'AUA SUI 1'],
+            ['不做：明確 SUI 且已檢查證實，NICE 明定初次手術前不做多頻道尿動力學；AUA 為可省略。', 'NICE 1.3.15・AUA SUI 5'],
+            ['也沒有 NICE 列出要做的四種情況：急迫主導或類型不明、排尿功能障礙、前／頂端脫垂、曾接受 SUI 手術。', 'NICE 1.3.16'],
+            ['沒有泌尿道異常疑慮，不做膀胱鏡。', 'AUA SUI 4']
+          ],
+          preset: { symptom: 'stress', phase: 'conservative', flags: [], mods: [] }, expect: '不需常規尿動力學'
+        },
+        {
+          label: '選術式', q: '她問「吊帶」是什麼，也擔心網片。怎麼談？',
+          steps: [
+            ['NICE 的選項：colposuspension、自體腹直肌筋膜吊帶，以及恥骨後中段尿道網片吊帶；須用決策輔助，並談當地沒有的術式。', 'NICE 1.5.1–1.5.2'],
+            ['指引差異：AUA 可提供恥骨後、經閉孔或單切口吊帶；NICE 除特定情況不用經閉孔，單切口僅限臨床試驗。', 'AUA SUI 12–13・NICE 1.5.10–1.5.11'],
+            ['選網片前必須說明特定風險與替代方案：永久植入物、可能無法完全移除；並給書面植入資料。', 'AUA SUI 10・NICE 1.5.7–1.5.8'],
+            ['台灣可用術式與網片規範須另行核對，不可直接套用英國政策。', '本頁教學界線']
+          ]
+        },
+        {
+          label: '術後', q: '接受恥骨後中段尿道吊帶。追蹤什麼？',
+          steps: [
+            ['術後早期聯繫，了解排尿困難、疼痛或其他意外狀況；有問題就回診檢查。', 'AUA SUI 23'],
+            ['6 個月內回診：殘餘漏尿、排尿與尿流、UTI、疼痛、性功能、新發或惡化的 OAB，並測殘尿。', 'AUA SUI 24・NICE 1.5.15'],
+            ['陰道檢查確認網片有無外露或穿出。', 'NICE 1.5.16・AUA SUI 24'],
+            ['手術失敗或症狀復發：尋求處理複雜骨盆底功能障礙的區域 MDT 意見；不想再手術則給症狀處理建議。', 'NICE 1.5.18']
+          ]
+        }
+      ]
+    },
+    {
+      id: 'oab', cls: 'c-urge', tag: '難治 OAB → 高齡用藥', title: '記憶變差的阿嬤：藥物之後怎麼走？',
+      who: '77 歲，尿急、頻尿、來不及就漏，已不太敢出門。高血壓控制穩定，便秘，自覺近年記性變差，每天 3 杯咖啡。',
+      data: ['日誌：白天 11 次、夜尿 2 次、急迫漏尿每天 3 次', '試紙陰性', '無血尿、神經學異常', '殘尿 40 mL（虛構數值）', '手部關節炎'],
+      stages: [
+        {
+          label: '初診', q: '先做什麼？夜尿能開 desmopressin 嗎？',
+          steps: [
+            ['評估共病與藥物對頻尿、尿急的影響，並說明處理後可能改善。', 'AUA OAB 7'],
+            ['膀胱訓練至少 6 週、減少咖啡因、調整液體；討論護墊等處理用品，但它不是治療。', 'NICE 1.4.1–1.4.2・1.4.11・AUA OAB 10–12・NICE 1.4.16'],
+            ['Desmopressin 應避免：> 65 歲合併高血壓。', 'NICE 1.4.34'],
+            ['初始評估不常規做尿動力學、膀胱鏡或影像。', 'AUA OAB 5']
+          ],
+          preset: { symptom: 'urge', phase: 'initial', flags: [], mods: ['nocturia', 'cognitive', 'over75'] }, expect: 'desmopressin'
+        },
+        {
+          label: '訓練 8 週後', q: '漏尿略減仍困擾，同意用藥。怎麼選？',
+          steps: [
+            ['抗膽鹼藥要先談失智與認知風險，並算總抗膽鹼負擔；她的認知疑慮與便秘都要納入。', 'AUA OAB 18・NICE 1.4.26'],
+            ['指引差異：AUA 兩類皆可、依副作用共同決策；NICE 先用最低價抗膽鹼藥，抗膽鹼藥不適合時才用 β3 促效劑。此例兩邊都支持選 β3 促效劑。', 'AUA OAB 16–17・NICE 1.4.30・1.4.32'],
+            ['若仍用抗膽鹼藥，避免速效 oxybutynin（年長且可能突然惡化者）。', 'NICE 1.4.29'],
+            ['開始後 4 週回顧；長期用藥每 6 個月回顧（> 75 歲）。血壓監測依藥品仿單。', 'NICE 1.4.38・1.4.42']
+          ],
+          preset: { symptom: 'urge', phase: 'conservative', flags: [], mods: ['cognitive', 'over75'] }, expect: '4 週'
+        },
+        {
+          label: '藥物效果不足', q: '換藥、合併後仍每天漏尿。下一步與兩份指引的差別？',
+          steps: [
+            ['AUA 應提供薦神經調控、PTNS 及／或膀胱內肉毒桿菌素；NICE 則先轉二級照護。', 'AUA OAB 25・NICE 1.4.40'],
+            ['NICE 路徑：做尿動力學確認逼尿肌過動，再經 MDT 提供肉毒。AUA 只列為可做，不是前提。', 'NICE 1.4.43–1.4.44・AUA OAB 29'],
+            ['關鍵問題：手部關節炎與記憶問題下，能自我導尿嗎？不願或不能規律導尿，也不接受暫時留置，就不開始肉毒。', 'NICE 1.4.46–1.4.47'],
+            ['不接受導尿風險時，NICE 改提供經皮薦神經刺激；PTNS 僅在 MDT 後且兩者都不要時。皮膚表面電刺激不提供。', 'NICE 1.4.52・1.4.15・1.4.13–1.4.14']
+          ],
+          preset: { symptom: 'urge', phase: 'medication', flags: [], mods: ['cognitive', 'over75'] }, expect: '100 U'
+        },
+        {
+          label: '接受肉毒之後', q: '她接受必要時暫時留置導尿，注射肉毒。如何追蹤？',
+          steps: [
+            ['注射前測殘尿；NICE 起始劑量 100 U。', 'AUA OAB 26・NICE 1.4.48'],
+            ['12 週內回顧。緩解不足可考慮之後增至 200 U；症狀未改善或惡化要再測殘尿。', 'NICE 1.4.49・AUA OAB 27'],
+            ['緩解足夠但不到 6 個月，也可考慮之後增至 200 U。', 'NICE 1.4.50'],
+            ['反應好就停口服藥，效果不再時才重啟。', 'AUA OAB 28']
+          ]
+        }
+      ]
+    },
+    {
+      id: 'pop', cls: 'c-pop', tag: '脫垂 → 術式與潛在漏尿', title: '子宮托掉了兩次：手術要不要順便做吊帶？',
+      who: '68 歲，自然產 3 次，陰道膨出感與下墜感 1 年，久站加重，偶有排不乾淨感。自述沒有漏尿。',
+      data: ['最遠點 Ba +2 cm（前腔室）', 'C −3、Bp −2、TVL 9 cm（虛構數值）', '陰道乾澀', '未摸到骨盆腫塊', '殘尿 60 mL（虛構數值）'],
+      popq: { comp: 'anterior', lead: 2, tvl: 9, stage: 3 },
+      stages: [
+        {
+          label: '初診', q: '先算 POP-Q，然後有哪些非手術選項？骨盆底肌訓練還是第一選擇嗎？',
+          steps: [
+            ['最遠點 +2：超出處女膜 1 cm 以上，且未達 TVL−2（7 cm），為 POP-Q 3 期。分期取最遠點，不是每個腔室各算。', 'NICE 1.6.3・IUGA'],
+            ['骨盆檢查同時排除腫塊，也評估肌肉活動與陰道萎縮；已由檢查確認，不需影像。', 'NICE 1.6.1・1.6.3・1.6.5'],
+            ['至少 16 週訓練是 1–2 期的第一選擇，3 期不適用此建議。子宮托不限期別，可單用或合併訓練。', 'NICE 1.7.5–1.7.6'],
+            ['生活方式建議；陰道乾澀考慮陰道雌激素。子宮托前說明多次試戴、分泌物、出血、取出困難、脫落，至少每 6 個月取出。', 'NICE 1.7.2–1.7.3・1.7.8']
+          ],
+          preset: { symptom: 'prolapse', pop: '3', phase: 'initial', flags: [], mods: ['gsm', 'popUrinary'] }, expect: '子宮托'
+        },
+        {
+          label: '子宮托失敗', q: '試戴兩種都脫落，她希望手術。怎麼談？',
+          steps: [
+            ['非手術無效或婉拒者提供手術；用決策輔助，談繼續非手術、復發、泌尿／腸道／性功能變化與網片不確定性。', 'NICE 1.8.1–1.8.2'],
+            ['有子宮脫垂成分時，依是否保留子宮討論陰道子宮切除、薦棘韌帶固定、Manchester 等選項；用網片要說明材質與永久性。', 'NICE 1.8.8–1.8.11・1.8.6'],
+            ['困擾的排尿症狀且手術為選項時，考慮進一步檢查。', 'NICE 1.6.7']
+          ],
+          preset: { symptom: 'prolapse', pop: '3', phase: 'conservative', flags: [], mods: ['popUrinary'] }, expect: '手術'
+        },
+        {
+          label: '要不要加吊帶？', q: '復位脫垂後做咳嗽測試，沒有漏尿。她問：要不要順便做吊帶預防？',
+          steps: [
+            ['NICE：沒有尿失禁者，不為預防而做失禁手術；但須告知前／頂端脫垂術後可能新發漏尿，可能需後續治療。', 'NICE 1.8.3–1.8.4'],
+            ['AUA 把這個情境列為須額外評估：POP-Q ≥ 3 期且復位後未證實 SUI。', 'AUA SUI 2'],
+            ['指引差異：AUA 討論全做、全不做、選擇性三種做法，並引用 OPUS：加吊帶 12 個月 SUI 27.3% vs 43.0%，NNT 6.3。提醒要權衡不必要手術與併發症。', 'AUA SUI 19 討論'],
+            ['若復位後確實漏尿、考慮同時手術：NICE 要求術前尿動力學，並說明合併手術超過 1 年的效果仍不確定。', 'NICE 1.9.1–1.9.2・1.3.16']
+          ],
+          preset: { symptom: 'prolapse', pop: '3', phase: 'conservative', flags: [], mods: ['popUrinary'] }, expect: '潛在性 SUI'
+        }
+      ]
+    }
+  ];
+
+  // branches of the mind map; each leaf = [text, source]
+  const MAP = [
+    {
+      id: 'assess', cls: 'm-assess', title: '共同評估', groups: [
+        { t: '分型', items: [['應力、混合、急迫／OAB；混合型依主要症狀', 'NICE 1.3.1']] },
+        { t: '都要做', items: [['尿液試紙', 'NICE 1.3.5'], ['排尿日誌 ≥ 3 天，含工作與休假日', 'NICE 1.3.13']] },
+        { t: '有指徵才做', items: [['殘尿：排尿困難或反覆 UTI，膀胱掃描優先', 'NICE 1.3.10–1.3.11'], ['SUI 術前尿動力學：急迫主導或類型不明、排尿障礙、前／頂端脫垂、曾 SUI 手術', 'NICE 1.3.16']] },
+        { t: '不常規', items: [['墊片測試、膀胱鏡、影像', 'NICE 1.3.14・1.3.18–1.3.19']] }
+      ]
+    },
+    {
+      id: 'flag', cls: 'm-flag', title: '警訊與轉介', groups: [
+        { t: '可疑癌症路徑', items: [['血尿；反覆或持續不明原因 UTI', 'NICE 1.3.21'], ['骨盆腫塊：卵巢癌、膀胱癌路徑', 'NICE 1.6.1']] },
+        { t: '考慮專科', items: [['持續膀胱／尿道疼痛、解尿後可觸及膀胱', 'NICE 1.3.20'], ['疑神經疾病、瘻管、排尿困難、合併大便失禁', 'NICE 1.3.20'], ['曾失禁手術、骨盆癌手術、骨盆放療', 'NICE 1.3.20']] }
+      ]
+    },
+    {
+      id: 'sui', cls: 'm-stress', title: '應力性尿失禁', groups: [
+        { t: '第一線', items: [['監督式骨盆底肌訓練 ≥ 3 個月，每天 3 次、每次 ≥ 8 下', 'NICE 1.4.4–1.4.5'], ['BMI > 30 減重', 'NICE 1.4.3'], ['Duloxetine 不作第一線', 'NICE 1.4.35']] },
+        { t: '手術前', items: [['病史、骨盆檢查、客觀證實 SUI、殘尿、尿液分析', 'AUA SUI 1'], ['明確 SUI 初次手術不做尿動力學', 'NICE 1.3.15・AUA SUI 5']] },
+        { t: '手術', items: [['Colposuspension、自體筋膜吊帶、恥骨後網片吊帶', 'NICE 1.5.2'], ['網片：永久植入，須說明風險與替代', 'NICE 1.5.7・AUA SUI 10'], ['其他術式不適合才用填充劑', 'NICE 1.5.3'], ['不做前陰道壁修補、MMK 等', 'NICE 1.5.14']] },
+        { t: '術後', items: [['6 個月內回診；網片者做陰道檢查', 'NICE 1.5.15–1.5.16・AUA SUI 24']] }
+      ]
+    },
+    {
+      id: 'oab', cls: 'm-urge', title: '急迫性／OAB', groups: [
+        { t: '第一線', items: [['膀胱訓練 ≥ 6 週', 'NICE 1.4.11'], ['減少咖啡因、調整液體', 'NICE 1.4.1–1.4.2'], ['評估共病與藥物', 'AUA OAB 7']] },
+        { t: '藥物', items: [['AUA：抗膽鹼藥或 β3 皆可；NICE：抗膽鹼藥先', 'AUA OAB 16・NICE 1.4.30・1.4.32'], ['抗膽鹼：談失智風險、算總負擔', 'AUA OAB 18・NICE 1.4.26'], ['4 週回顧；長期每 12 個月，> 75 歲每 6 個月', 'NICE 1.4.38・1.4.42'], ['夜尿 desmopressin：> 65 歲合併心血管病或高血壓避免', 'NICE 1.4.34']] },
+        { t: '藥物無效', items: [['肉毒 100 U，12 週內回顧；先測殘尿，須願意導尿', 'NICE 1.4.47–1.4.49・AUA OAB 26'], ['薦神經刺激：肉毒無效或不接受導尿風險', 'NICE 1.4.52'], ['PTNS：NICE 限 MDT 後；AUA 與其他並列', 'NICE 1.4.15・AUA OAB 25'], ['NICE 先做尿動力學與 MDT', 'NICE 1.4.43–1.4.44']] },
+        { t: '最後手段', items: [['膀胱擴大整形、尿路改道', 'NICE 1.4.55–1.4.56・AUA OAB 30']] }
+      ]
+    },
+    {
+      id: 'pop', cls: 'm-pop', title: '骨盆器官脫垂', groups: [
+        { t: '評估', items: [['POP-Q 記錄前、中、後腔室；排除腫塊', 'NICE 1.6.1・1.6.3'], ['已由檢查確認不需影像', 'NICE 1.6.5'], ['症狀與檢查不符：站立、蹲姿或改日重檢', 'NICE 1.6.6']] },
+        { t: '非手術', items: [['減重、少提重物、治便秘', 'NICE 1.7.2'], ['1–2 期：監督式訓練 ≥ 16 週', 'NICE 1.7.5'], ['子宮托：至少每 6 個月取出', 'NICE 1.7.6・1.7.8'], ['泌尿生殖症狀：陰道雌激素', 'NICE 1.7.3']] },
+        { t: '手術', items: [['非手術無效或婉拒者提供，用決策輔助', 'NICE 1.8.1–1.8.2'], ['用網片須說明材質與永久性', 'NICE 1.8.6']] },
+        { t: '與 SUI 的關係', items: [['無漏尿：不為預防做失禁手術，但告知術後風險', 'NICE 1.8.3–1.8.4'], ['≥ 3 期且復位後未證實 SUI：額外評估', 'AUA SUI 2'], ['合併 SUI：考慮同時手術，超過 1 年效果不確定', 'NICE 1.9.1–1.9.2']] }
+      ]
+    }
+  ];
+
+  root.PF.FULL = FULL;
+  root.PF.MAP = MAP;
+})(typeof window !== 'undefined' ? window : globalThis);
+/*TEACH-END*/
+
 (function () {
   'use strict';
   if (typeof document === 'undefined') return;
@@ -328,4 +509,40 @@
   $('#reset').addEventListener('click', () => { seed = (seed * 31 + 7) >>> 0; renderQuiz(); $('#quiz').scrollIntoView({ behavior: 'smooth' }); });
   renderCases();
   renderQuiz();
+
+  /* ---------- full cases ---------- */
+  const cite = s => `<cite>${esc(s)}</cite>`;
+  $('#full-cases').innerHTML = PF.FULL.map((c, ci) => `<article class="full ${c.cls}">
+    <div class="full-head"><small>CASE ${'ABC'[ci]} · ${esc(c.tag)}</small><h3>${esc(c.title)}</h3><p>${esc(c.who)}</p>
+      <ul class="full-data">${c.data.map(d => `<li>${esc(d)}</li>`).join('')}</ul>
+      ${c.popq ? `<button type="button" class="chip-btn" data-popq="${ci}">帶入 POP-Q 計算器 ↑</button>` : ''}</div>
+    <div class="full-stages">${c.stages.map((s, si) => `<details class="stage"${si === 0 ? ' open' : ''}>
+      <summary><i>${si + 1}</i><span><b>${esc(s.label)}</b>${esc(s.q)}</span></summary>
+      <ol class="steps">${s.steps.map(x => `<li><span>${esc(x[0])}</span>${cite(x[1])}</li>`).join('')}</ol>
+      ${s.preset ? `<button type="button" class="chip-btn" data-load="${ci}.${si}">帶入互動分流 ↑</button>` : ''}
+    </details>`).join('')}</div>
+  </article>`).join('');
+  $$('[data-load]').forEach(b => b.addEventListener('click', () => {
+    const [ci, si] = b.dataset.load.split('.').map(Number);
+    write(PF.FULL[ci].stages[si].preset);
+    $$('[data-preset]').forEach(x => x.classList.remove('active'));
+    sync();
+    $('#pathway').scrollIntoView({ behavior: 'smooth' });
+  }));
+  $$('[data-popq]').forEach(b => b.addEventListener('click', () => {
+    const p = PF.FULL[Number(b.dataset.popq)].popq;
+    pq.comp.value = p.comp; pq.lead.value = p.lead; pq.tvl.value = p.tvl;
+    drawPopq();
+    $('#popq').scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  /* ---------- mind map ---------- */
+  $('#mindmap').innerHTML = `<div class="mm-root">漏尿・尿急・膨出<small>先分型，再選路徑</small></div>
+    <div class="mm-branches">${PF.MAP.map(b => `<details class="mm-branch ${b.cls}" open>
+      <summary>${esc(b.title)}</summary>
+      <div class="mm-groups">${b.groups.map(g => `<div class="mm-group"><h4>${esc(g.t)}</h4><ul>${g.items.map(x => `<li>${esc(x[0])}${cite(x[1])}</li>`).join('')}</ul></div>`).join('')}</div>
+    </details>`).join('')}</div>`;
+  const setAll = open => $$('.mm-branch').forEach(d => { d.open = open; });
+  $('#mm-open').addEventListener('click', () => setAll(true));
+  $('#mm-close').addEventListener('click', () => setAll(false));
 })();
